@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+
+    <title>错误</title>
+    <link rel="stylesheet" href="../../static/css/me.css">
+</head>
+<body>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="m-container-small m-padded-tb-massive">
+<div class="ui error message m-padded-tb-huge" >
+    <div class="ui contianer">
+        <h2>错误</h2>
+        <p>对不起，服务异常，请联系管理员</p>
+        <div th:utext="'Failed Request URL : ' + ${url}"  ></div>
+        <div th:utext="'Exception message : ' + ${Exception}"  ></div>
+    </div>
+</div>
+</div>
+<br>
+<br>
+<br>
+<br>
+
+<div>
+    <div th:utext="'&lt;!--'"  ></div>
+    <div th:utext="'Failed Request URL : ' + ${url}"  ></div>
+    <div th:utext="'Exception message : ' + ${Exception}"  ></div>
+    <div th:utext="'--&gt;'"  ></div>
+</div>
+</body>
+</html>

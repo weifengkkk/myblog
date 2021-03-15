@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title th:repalce="${title}">首页</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+    <link rel="stylesheet" href="../../static/css/typo.css" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" href="../../static/css/animate.css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" href="../../static/css/prism.css" th:href="@{/css/prism.css}">
+    <link rel="stylesheet" href="../../static/css/tocbot.css" th:href="@{/css/tocbot.css}">
+    <link rel="stylesheet" href="../../static/css/me.css" th:href="@{/css/me.css}">
+    <link rel="stylesheet" href="../../static/css/jquery.emoji.css" th:href="@{/css/jquery.emoji.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../static/lib/editormd/css/editormd.css" th:href="@{/lib/editormd/css/editormd.css}">
+</head>
+
+<body>
+<nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini m-opacity-tiny" >
+
+
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item" ><a class=" m-item mobile m-mobile-hide item"  href="/" th:href="@{/}">微风</a></h2>
+            <a href="#" class=" m-item mobile m-mobile-hide item"th:classappend="${n==1} ? 'active'" th:href="@{/admin/blogs}"><i class="home icon"></i>首页</a>
+            <a href="#" class="m-item mobile m-mobile-hide item" th:classappend="${n==2} ? 'active'" th:href="@{/admin/types}"><i class="idea icon"></i>分类</a>
+            <a href="#" class="m-item mobile m-mobile-hide item"th:classappend="${n==3} ? 'active'" th:href="@{/admin/tags}"><i class="tags icon"></i>标签</a>
+            <!--            下拉菜单-->
+            <div class="right m-item mobile m-mobile-hide menu">
+                <div class="ui select dropdown item">
+                    <div class="text">
+                        <img class="ui avatar image" th:src="@{${session.user.avatar}}">
+                        <span th:text="${session.user.nickname}">微风</span>
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" class="item" th:href="@{/admin/logout}">注销</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-top-right m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+
+</nav>
+
+<footer th:fragment="footer" class="ui inverted vertical segment m-opacity-tiny ">
+
+    <div class="ui center aligned container m-padded-tb-massive">
+        <div class="ui mobile reserved secondary stackable inverted divided grid">
+            <div class="three wide column ">
+                <img src="../../static/img/Wechat.png" class="ui rounded image" style="width: 150px" alt="">
+
+            </div>
+            <div class="four wide column">
+                <h4 class="class ui inverted header">最新博客</h4>
+                <div class="class ui inverted link list">
+                    <a href="#" class="item">用户故事(User Story)</a>
+                    <a href="#" class="item">用户故事(User Story)</a>
+                    <a href="#" class="item">用户故事(User Story)</a>
+                </div>
+            </div>
+            <div class="four wide column">
+                <h4 class="class ui inverted header">联系我</h4>
+                <div class="class ui inverted link list">
+                    <a href="#" class="item">Email: 2360484952@qq.com</a>
+                    <a href="#" class="item">QQ: 2360484952</a>
+                </div>
+            </div>
+            <div class="five wide column">
+                <h4 class="class ui inverted header">微风</h4>
+                <div class="class ui inverted link list">
+                    <a href="#" class="item">这是我的个人博客、记录学习进度和关于编程、写作、思考相关的任何内容...</a>
+                </div>
+            </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+        <p class="m-opacity-tiny">Copyright @ 2020-2021 微风 Designed by 微风</p>
+    </div>
+
+</footer>
+
+<!--/*/<th:block th:fragment="script">/*/-->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="../../static/js/prism.js" th:src="@{/js/prism.js}"></script>
+    <script src="../../static/js/emoji.list.js" th:src="@{/js/emoji.list.js}"></script>
+    <script src="../../static/js/tocbot.js" th:src="@{/js/tocbot.js}"></script>
+    <script src="../../static/lib/editormd/editormd.js" th:src="@{/lib/editormd/editormd.js}"></script>
+
+    <script>
+
+        $('.menu.toggle').click(function (){
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+        $('.ui.dropdown').dropdown({
+            on : 'hover'
+        });
+    </script>
+
+<!--/*/</th:block>/*/-->
+</body>

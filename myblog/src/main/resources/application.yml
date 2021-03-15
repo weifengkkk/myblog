@@ -1,0 +1,26 @@
+spring:
+  thymeleaf:
+    mode: HTML
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/myblog?useUnicode=true&characterEncoding=utf-8
+    username:  root
+    password:  wf20010417
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+    database-platform: com.example.myblog.MysqlConfig
+logging:
+  level:
+    root: info
+    com.example.myblog: debug
+  file:
+    path: log/blog.log
+
+comment.avatar: http://xiongsihao.com/images/avatar.png  #游客默认头像
+
+#QQ登录后指定用户为管理员的依据，用来识别博主是谁
+admin.openid: F9F8E0C1E23D67668EFEF7A34B510F66

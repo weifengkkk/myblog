@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>博客详情</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/typo.css" >
+  <link rel="stylesheet" href="../static/css/animate.css">
+  <link rel="stylesheet" href="../static/css/prism.css">
+  <link rel="stylesheet" href="../static/css/tocbot.css">
+  <link rel="stylesheet" href="../static/css/me.css">
+  <link rel="stylesheet" href="../static/css/jquery.emoji.css">
+
+</head>
+<body>
+
+
+  <!--导航-->
+  <nav th:replace="_fragments :: menu(1)"  class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+    <div class="ui container">
+      <div class="ui inverted secondary stackable menu">
+        <h2 class="ui teal header item">微风</h2>
+        <a href="#" class="active m-item item m-mobile-hide"><i class="mini home icon"></i>首页</a>
+        <a href="#" class="m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
+        <a href="#" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
+        <a href="#" class="m-item item m-mobile-hide"><i class="mini clone icon"></i>归档</a>
+        <a href="#" class="m-item item m-mobile-hide"><i class="mini info icon"></i>关于我</a>
+        <div class="right m-item item m-mobile-hide">
+          <div class="ui icon inverted transparent input m-margin-tb-tiny">
+            <input type="text" placeholder="Search....">
+            <i class="search link icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+      <i class="sidebar icon"></i>
+    </a>
+  </nav>
+
+
+  <!--中间内容-->
+
+
+  <div id="waypoint" class="m-container m-padded-tb-big animated fadeIn m-opacity">
+    <input type="hidden" id="blogTitle" th:value="${blog.title}">
+    <input type="hidden" id="firstPicture" th:value="${blog.firstPicture}">
+    <input type="hidden" id="blogId" th:value="${blog.id}">
+    <div class="ui container">
+      <div class="ui top attached segment">
+        <div class="ui horizontal link list">
+          <div class="item">
+            <img src="https://unsplash.it/100/100?image=1005" th:src="@{${blog.user.avatar}}"  alt="" class="ui avatar image">
+            <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">Xiong_sh</a></div>
+          </div>
+          <div class="item">
+            <i class="calendar icon"></i>
+            <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2019-10-01</span>&nbsp;&nbsp;&nbsp;
+            <span th:text="${#dates.format(blog.updateTime,'HH:mm:ss')}">16:00:00</span>
+          </div>
+          <div class="item">
+            <i class="eye icon"></i> <span th:text="${blog.views}">2342</span>
+          </div>
+        </div>
+      </div>
+      <div class="ui attached segment">
+        <!--图片区域-->
+        <img id="blogFirstPicture" src="https://unsplash.it/800/450?image=1005" th:src="@{${blog.firstPicture}}" alt="" class="ui fluid rounded image">
+      </div>
+      <div class="ui   padded segment">
+        <!--内容-->
+        <div class="ui right aligned basic segment">
+          <div class="ui orange basic label" th:text="${blog.flag}">原创</div>
+        </div>
+
+        <h2  id="blogTitleValue" class="ui center aligned header" th:text="${blog.title}">关于刻意练习的清单</h2>
+
+
+        <br>
+        <!--中间主要内容部分-->
+        <div id="content" class="typo  typo-selection js-toc-content m-padded-lr-responsive m-padded-tb-large" th:utext="${blog.content}">
+
+
+        <!--赞赏-->
+        <div th:if="${blog.appreciation}">
+          <div class="ui center aligned basic segment">
+            <button id="payButton" class="ui orange basic circular button">赞赏</button>
+          </div>
+          <div class="ui payQR flowing popup transition hidden">
+            <div class="ui orange basic label">
+              <div class="ui images" style="font-size: inherit !important;">
+                <div class="image">
+                  <img src="../static/img/wechat.png" th:src="@{/img/wechat.png}" alt="" class="ui rounded bordered image" style="width: 120px">
+                  <div>支付宝</div>
+                </div>
+                <div class="image">
+                  <img src="../static/img/wechat.png" th:src="@{/imag/wechat.png}" alt="" class="ui rounded bordered image" style="width: 120px">
+                  <div>微信</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="ui attached positive message" th:if="${blog.shareStatement}">
+        <!--博客信息-->
+        <div class="ui middle aligned grid">
+          <div class="eleven wide column">
+            <ui class="list">
+              <li>作者：<span th:text="${blog.user.nickname}">微风</span><a href="#" th:href="@{/about}" target="_blank">（联系作者）</a></li>
+              <li>发表时间：<span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd HH:mm')}">2021-3-14</span></li>
+            </ui>
+          </div>
+          <div class="five wide column">
+            <img src="../static/img/wechat.png" th:src="@{/img/wechat.png}" alt="" class="ui right floated rounded bordered image" style="width: 110px">
+          </div>
+        </div>
+      </div>
+      <div  class="ui bottom attached segment" th:if="${blog.commentabled}">
+        <!--留言区域列表-->
+        <div id="comment-container"  class="ui teal segment">
+          <div th:fragment="commentList">
+            <div class="ui threaded comments" style="
+            max-width: 100%;">
+              <h3 class="ui dividing header">评论</h3>
+              <div class="comment" th:each="comment : ${comments}">
+                <a class="avatar">
+                  <img src="https://unsplash.it/100/100?image=1005" th:src="@{${comment.avatar}}">
+                </a>
+                <div class="content">
+                  <a class="author" >
+                    <span th:text="${comment.nickname}">Matt</span>
+                    <div class="ui mini basic adminComment left pointing label m-padded-mini" th:if="${comment.adminComment}==2">博主</div>
+                    <span class="ui mini basic visitComment left pointing label m-padded-mini" th:if="${comment.adminComment}==1">访客</span>
+                    <span class="ui mini basic touristComment left pointing label m-padded-mini" th:if="${comment.adminComment}==0">游客</span>
+                    <!--<span class="ui mini basic teal left pointing label m-padded-mini" th:if="${comment.adminComment}">博主</span>-->
+                  </a>
+                  <div class="metadata">
+                    <span class="date" th:text="${#dates.format(comment.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                  </div>
+                  <div id="commentText" class="text" th:utext="${comment.content}">
+                    How artistic!
+                  </div>
+                  <div class="actions">
+                    <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${comment.id},data-commentnickname=${comment.nickname}" onclick="reply(this)">回复</a>
+                  </div>
+                </div>
+                <div class="comments" th:if="${#arrays.length(comment.replyComments)}>0">
+                  <div class="comment" th:each="reply : ${comment.replyComments}">
+                    <a class="avatar">
+                      <img src="https://unsplash.it/100/100?image=1005" th:src="@{${reply.avatar}}">
+                    </a>
+                    <div class="content">
+                      <a class="author" >
+                        <span th:text="${reply.nickname}">小红</span>
+                        <div class="ui mini basic adminComment left pointing label m-padded-mini" th:if="${reply.adminComment}==2">博主</div>
+                        <span class="ui mini basic visitComment left pointing label m-padded-mini" th:if="${reply.adminComment}==1">访客</span>
+                        <span class="ui mini basic touristComment left pointing label m-padded-mini" th:if="${reply.adminComment}==0">游客</span>
+                        &nbsp;<span th:text="|@ ${reply.parentComment.nickname}|" class="m-teal">@ 小白</span>
+                      </a>
+                      <div class="metadata">
+                        <span class="date" th:text="${#dates.format(reply.createTime,'yyyy-MM-dd HH:mm')}">Today at 5:42PM</span>
+                      </div>
+                      <div id="replyCommentText" class="text" th:utext="${reply.content}">
+                        How artistic!
+                      </div>
+                      <div class="actions">
+                        <a class="reply" data-commentid="1" data-commentnickname="Matt" th:attr="data-commentid=${reply.id},data-commentnickname=${reply.nickname}" onclick="reply(this)">回复</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/*-->
+
+              <!--*/-->
+
+            </div>
+          </div>
+        </div>
+        <div id="comment-form" class="ui form">
+          <input type="hidden" name="blog.id" th:value="${blog.id}">
+          <input type="hidden" name="parentComment.id" value="-1">
+          <div  class="fields">
+            <textarea name="content" placeholder="请输入评论信息..."></textarea>
+          </div>
+          <div  id="commentEditor" class="fields" contenteditable="true" data-placeholder="请输入评论信息..."></div>
+
+          <div class="fields">
+            <!--表情按钮-->
+            <div class="field  m-margin-bottom-small m-mobile-wide" data-tooltip="表情未加载完全或点击无响应可刷新页面重试">
+              <button id="emojiBtn" type="button" class="ui yellow button m-mobile-wide"><i class="large smile outline icon"></i>表情</button>
+            </div>
+
+            <div class="field m-mobile-wide m-margin-bottom-small">
+              <div class="ui left icon input">
+                <i class="user icon"></i>
+                <input type="text" name="nickname" placeholder="姓名" th:value="${session.nickname}!=null ? ${session.nickname}">
+              </div>
+            </div>
+            <div class="field m-mobile-wide m-margin-bottom-small">
+              <div class="ui left icon input">
+                <i class="mail icon"></i>
+                <input type="text" name="email" placeholder="邮箱" th:value="${session.user}!=null ? ${session.user.email}">
+              </div>
+            </div>
+            <div class="field  m-margin-bottom-small m-mobile-wide">
+              <button id="commentpost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toolbar" class="m-padded m-fixed m-right-bottom" style="display: none;">
+    <div class="ui vertical icon buttons ">
+      <button type="button" class="ui toc teal button" >目录</button>
+      <a href="#comment-container" class="ui teal button" >留言</a>
+      <button type="button" class="ui share teal button" >分享</button>
+      <!--<button class="ui wechat icon button"><i class="weixin icon"></i></button>-->
+      <button class="ui wechat icon button"><i class="big qrcode icon"></i></button>
+      <div id="toTop-button" class="ui icon button" ><i class="chevron up icon"></i></div>
+    </div>
+  </div>
+
+  <div class="ui toc-container flowing popup transition hidden" style="width: 250px!important;">
+    <ol class="js-toc">
+
+    </ol>
+  </div>
+
+  <!--点击分享弹出框-->
+  <div class="ui share-container flowing popup transition hidden" style="width: 240px!important;">
+    <div class="ui bottom attached segment">
+      <button title="点击分享微博" onclick="sinaWeiBo()" class="ui weibo circular icon button" ><i class="red weibo icon"></i></button>
+      <button title="点击分享微信" onclick="shareWeiXin()" class="ui wechat circular icon button" ><i class="green weixin icon"></i></button>
+      <button title="点击分享QQ好友" onclick="shareQQ()" class="ui qq circular icon button"><i class="blue qq icon"></i></button>
+
+      <button title="点击分享QQ空间" onclick="shareQQZone()" class="ui qqZone circular icon button"><i class="yellow share icon"></i></button>
+    </div>
+  </div>
+
+  <!--二维码弹框-->
+  <div id="qrcode" class="ui wechat-qr flowing popup transition hidden "style="width: 130px !important;">
+    <p style="color: red;font-size: small;text-align:center" class="h6 small">手机扫码阅读本文</p>
+  </div>
+
+  </div>
+
+  <br>
+  <br>
+  <!--底部footer-->
+  <footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+    <div class="ui center aligned container m-padded-tb-massive">
+      <div class="ui mobile reserved secondary stackable inverted divided grid">
+        <div class="three wide column ">
+          <img src="../static/img/wechat.png" th:src="@{/img/wechat.png}" class="ui rounded image" style="width: 150px" alt="">
+
+        </div>
+        <div class="four wide column">
+          <h4 class="class ui inverted header">最新博客</h4>
+          <div class="class ui inverted link list">
+            <a href="#" class="item">用户故事(User Story)</a>
+            <a href="#" class="item">用户故事(User Story)</a>
+            <a href="#" class="item">用户故事(User Story)</a>
+          </div>
+        </div>
+        <div class="four wide column">
+          <h4 class="class ui inverted header">联系我</h4>
+          <div class="class ui inverted link list">
+            <a href="#" class="item">Email: 2360484952@qq.com</a>
+            <a href="#" class="item">QQ: 2360484952</a>
+          </div>
+        </div>
+        <div class="five wide column">
+          <h4 class="class ui inverted header">微风</h4>
+          <div class="class ui inverted link list">
+            <a href="#" class="item">这是我的个人博客、记录学习进度和关于编程、写作、思考相关的任何内容...</a>
+          </div>
+        </div>
+      </div>
+      <div class="ui inverted section divider"></div>
+      <p class="m-opacity-tiny">Copyright @ 2020-2021 微风 Designed by 微风</p>
+    </div>
+
+  </footer>
+
+  <!--/*/<th:block th:replace="_fragments :: script">/*/-->
+
+  <script>
+    $('.menu.toggle').click(function (){
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.ui.dropdown').dropdown({
+      on : 'hover'
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+  <div class="aplayer" data-id="3778678" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="false"  data-volume="0.6" ></div>
+  <script src="http://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+  <script src="http://cdn.jsdelivr.net/npm/meting@1.2.0/dist/Meting.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <script src="../static/js/prism.js" th:src="@{/js/prism.js}"></script>
+  <script src="../static/js/tocbot.js" th:src="@{/js/tocbot.js}"></script>
+  <script src="../static/js/qrcode.js" th:src="@{/js/qrcode.js}"></script>
+  <script src="../static/js/jquery.emoji.js" th:href="/js/jquery.emoji.js"></script>
+  <script src="../static/js/emoji.list.js" th:href="/js/emoji.list.js"></script>
+
+  <script src="../static/js/waypoints/jquery.waypoints.js" th:href="/js/waypoints/jquery.waypoints.js"></script>
+
+  <script>
+    $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
+  </script>
+  <script>
+    $('.ui.dropdown').dropdown({
+      on: 'hover'
+    });
+  </script>
+
+  <script src="http://connect.qq.com/widget/loader/loader.js" widget="shareqq" charset="utf-8"></script>
+  <!--适配移动端和电脑端-->
+ <script type="text/javascript">
+    var browser = {
+      versions: function () {
+        var u = navigator.userAgent, app = navigator.appVersion;
+        return {     //移动终端浏览器版本信息
+          trident: u.indexOf('Trident') > -1, //IE内核
+          presto: u.indexOf('Presto') > -1, //opera内核
+          webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+          gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+          mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+          ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+          android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或uc浏览器
+          iPhone: u.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
+          iPad: u.indexOf('iPad') > -1, //是否iPad
+          webApp: u.indexOf('Safari') == -1 //是否web应用程序，没有头部与底部
+        };
+      }(),
+      language: (navigator.browserLanguage || navigator.language).toLowerCase()
+    }
+    if (browser.versions.mobile) {
+      //执行移动端的相关代码
+      //alert("移动端");
+      //设置移动端不显示网易云音乐插件
+      /*      onload = function () {
+                var MusicDivShow = document.getElementById('netEasy-music');//获取指定div中的元素
+                MusicDivShow.style.display = 'none';//控制层隐藏
+            };*/
+    }else if(!browser.versions.mobile){ //非移动端，动态加载js和div
+      //blog页面不显示网易云音乐插件，因为右下角有菜单栏
+/*      onload = function () {
+        var MusicDivShow = document.getElementById('netEasy-music');//获取指定div中的元素
+        MusicDivShow.style.display = 'block';//控制层显示
+      };*/
+      <!-- 天气预报 -->
+      WIDGET = {FID: 'EtgqPWMbdv'}
+      var script4 = document.createElement('script');
+      script4.type = 'text/javascript';
+      script4.src = 'https://apip.weatherdt.com/float/static/js/r.js?v=1111';
+
+      var script2 = document.createElement('script');
+      script2.type = 'text/javascript';
+      script2.src = '/js/click_show_text.js';
+
+      var script3 = document.createElement('script');
+      script3.type = 'text/javascript';
+      script3.color = '220,220,220';
+      script3.opacity = '0.7';
+      script3.zIndex = '-2';
+      script3.count = '200';
+      script3.src = '//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js';
+
+
+      $('body').append(script4);
+      $('body').append(script2);
+      $('body').append(script3);
+    }
+  </script>
+
+  <script th:inline="javascript">
+    onload = function () {
+      $("#commentEditor").emoji({
+        button: "#emojiBtn",
+        showTab: false,
+        animation: 'slide',
+        basePath: '/img/emoji',
+        icons: emojiLists
+      });
+
+      $("#messageText").emojiParse({
+        basePath: '/img/emoji',
+        icons: emojiLists
+      });
+    }
+  </script>
+  <script >
+    /*加载emoji表情*/
+
+
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('#payButton').popup({
+      popup : $('.payQR.popup'),
+      on : 'click',
+      position: 'bottom center'
+    });
+
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h1, h2, h3',
+    });
+    /*目录*/
+    $('.toc.button').popup({
+      popup : $('.toc-container.popup'),
+      on : 'click',
+      position: 'left center'
+    });
+    /*分享*/
+    $('.share.button').popup({
+      popup : $('.share-container.popup'),
+      on : 'click',
+      position: 'left center'
+    });
+
+    $('.wechat').popup({
+      popup : $('.wechat-qr'),
+      position: 'left center',
+    });
+
+
+
+    let waypoint = new Waypoint({
+      element: document.getElementById('waypoint'),
+      handler: function(direction) {
+        if (direction == 'down') {
+          $('#toolbar').show(100);
+        } else {
+          $('#toolbar').hide(500);
+        }
+        console.log('Scrolled to waypoint!  ' + direction);
+      }
+    })
+
+
+    //评论表单验证
+    $('.ui.form').form({
+      fields: {
+                title: {
+                  identifier: 'content',
+                  rules: [{
+                    type: 'empty',
+                    prompt: '请输入评论内容'
+                  }
+                  ]
+                },
+        content: {
+          identifier: 'nickname',
+          rules: [{
+            type: 'empty',
+            prompt: '请输入你的大名'
+          }]
+        },
+        type: {
+          identifier: 'email',
+          rules: [{
+            type: 'email',
+            prompt: '请填写正确的邮箱地址'
+          }]
+        }
+      }
+    });
+
+    $(function () {
+      $("#comment-container").load(/*[[@{/comments/{id}(id=${blog.id})}]]*/"comments/6");
+    });
+
+
+
+    $('#commentpost-btn').click(function () {
+      var boo = $('.ui.form').form('validate form');
+      if (boo) {
+        console.log('校验成功');
+        postData();
+      } else {
+        console.log('校验失败');
+      }
+
+    });
+
+    function postData() {
+      $("#comment-container").load(/*[[@{/comments}]]*/"",{
+        "parentComment.id" : $("[name='parentComment.id']").val(),
+        "blog.id" : $("[name='blog.id']").val(),
+        "nickname": $("[name='nickname']").val(),
+        "email"   : $("[name='email']").val(),
+        //"content" : $("[name='content']").val()
+        "content" : document.getElementById("commentEditor").innerHTML
+      },function (responseTxt, statusTxt, xhr) {
+//        $(window).scrollTo($('#comment-container'),500);
+        clearContent();
+      });
+    }
+
+    function clearContent() {
+      //$("[name='content']").val('');
+      $("[name='parentComment.id']").val(-1);
+      //$("[name='content']").attr("placeholder", "请输入评论信息...");
+      document.getElementById("commentEditor").innerText='';
+      $("[id='commentEditor']").attr("data-placeholder", "请输入评论信息...");
+    }
+
+
+    function reply(obj) {
+      var commentId = $(obj).data('commentid');
+      var commentNickname = $(obj).data('commentnickname');
+      $("[id='commentEditor']").attr("data-placeholder", "@"+commentNickname);
+      $("[name='parentComment.id']").val(commentId);
+      $(window).scrollTo($('#comment-form'),500);
+    }
+
+
+
+
+  </script>
+  <!--/*/</th:block>/*/-->
+
+</body>
+</html>
