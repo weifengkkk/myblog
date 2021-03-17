@@ -56,10 +56,10 @@
                     <a href="#" target="_blank" th:href="@{/admin}" style="width:80px; text-align:center"><i class="mini user secret icon"></i>&nbsp;后台管理</a>
                 </div>
 
-                <div class="ui dropdown item" th:classappend="${session.loginStatus}?'myShowStyle':'myHideStyle'">
+                <div class="ui dropdown item" th:classappend="${session.loginStatus}?'myShowStyle':'myHideStyle'" th:if="${session.user} != null"  >
                     <div class="text">
-                        <img class="ui avatar image" th:src="${session.avatar}">
-                        <span th:text="${session.nickname}">微风</span>
+                        <img class="ui avatar image" th:src="${session.user.avatar}">
+                        <span th:text="${session.user.nickname}">微风</span>
                     </div>
 <!--                    <i class="dropdown icon"></i>-->
 <!--                    <div class="menu" th:if="${session.loginType == 1}">-->

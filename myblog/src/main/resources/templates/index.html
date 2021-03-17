@@ -60,10 +60,10 @@
                         <div class="ui mobile reversed stackable grid">
                             <div class="eleven wide column">
                                 <h3 class="ui header">
-                                    <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" th:text="|${blog.description}......|" class="m-black"> ZooKeeper</a>
+                                    <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" th:text="|${blog.title}" class="m-black"> ZooKeeper</a>
 
                                 </h3>
-                                <p  class="m-text">Zookeeper 分布式服务框架是Apache Hadoop 的一个子项目，它主要是用来解决分布
+                                <p  class="m-text" th:text="|${blog.description}......|">Zookeeper 分布式服务框架是Apache Hadoop 的一个子项目，它主要是用来解决分布
                                     式应用中经常遇到的一些数据管理问题，如：分布式注册中心，分布式锁，统一命名服
                                     务、状态同步服务、集群管理、分布式应用配置项的管理等等......</p>
                                 <div class="ui  grid">
@@ -79,7 +79,7 @@
                                             <i class="calendar icon"></i> <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2021-3-14</span>
                                         </div>
                                         <div class="item">
-                                            <i class="eye icon"></i>666
+                                            <i class="eye icon"></i><span th:text="${blog.views}"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -131,23 +131,7 @@
                                 <span th:text="${type.name}">学习日志</span>
                                 <div class="ui teal basic left pointing label" th:text="${#arrays.length(type.blogs)}">13</div>
                             </a>
-                            <a href="#" class="item">
-                                学习日志
-                                <div class="ui teal basic left pointing label">13</div>
-                            </a><a href="#" class="item">
-                            学习日志
-                            <div class="ui teal basic left pointing label">13</div>
-                        </a><a href="#" class="item">
-                            学习日志
-                            <div class="ui teal basic left pointing label">13</div>
-                        </a><a href="#" class="item">
-                            学习日志
-                            <div class="ui teal basic left pointing label">13</div>
-                        </a>
-                            <a href="#" class="item">
-                            学习日志
-                            <div class="ui teal basic left pointing label">13</div>
-                        </a>
+
                         </div>
                     </div>
 
@@ -168,24 +152,7 @@
                         <a href="#" th:href="@{/tags/{id}(id=${tag.id})}"  th:each="tag : ${tags}"target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">方法论
                             <span th:text="${tag.name}">方法论</span> <div class="detail" th:text="${#arrays.length(tag.blogs)}">23</div>
                         </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">方法论
-                            <div class="detail">23</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">方法论
-                            <div class="detail">23</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">方法论
-                            <div class="detail">23</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">方法论
-                            <div class="detail">23</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">方法论
-                            <div class="detail">23</div>
-                        </a>
-                        <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny">方法论
-                        <div class="detail">23</div>
-                     </a>
+
                     </div>
 
                 </div>

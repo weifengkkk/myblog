@@ -180,13 +180,12 @@
             </div>
           </div>
         </div>
-        <div id="comment-form" class="ui form">
+        <div id="comment-form" class="ui form" th:action="@{/comments}">
           <input type="hidden" name="blog.id" th:value="${blog.id}">
           <input type="hidden" name="parentComment.id" value="-1">
-          <div  class="fields">
-            <textarea name="content" placeholder="请输入评论信息..."></textarea>
+
+          <div  id="commentEditor" style="height: 150px; margin-left: 20px;margin-right: 20px  " class="ui segment " contenteditable="true" data-placeholder="请输入留言信息...">
           </div>
-          <div  id="commentEditor" class="fields" contenteditable="true" data-placeholder="请输入评论信息..."></div>
 
           <div class="fields">
             <!--表情按钮-->
@@ -207,7 +206,7 @@
               </div>
             </div>
             <div class="field  m-margin-bottom-small m-mobile-wide">
-              <button id="commentpost-btn" type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
+              <button  type="button" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
             </div>
 
           </div>
